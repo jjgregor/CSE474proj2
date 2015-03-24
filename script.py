@@ -8,16 +8,25 @@ import pickle
 
 def ldaLearn(X,y):
     # Inputs
-    # X - a N x d matrix with each row corresponding to a training example
-    # y - a N x 1 column vector indicating the labels for each training example
+    # X - a N x d matrix with each row corresponding to a training example  (150 x 2)
+    # y - a N x 1 column vector indicating the labels for each training example (150 x 1)
     #
     # Outputs
     # means - A d x k matrix containing learnt means for each of the k classes
     # covmat - A single d x d learnt covariance matrix 
     
     # IMPLEMENT THIS METHOD
-    
-    return means,covmat
+
+    data1 = X[:, 0]
+    data2 = X[:, 1]
+
+    # Calculate the averages
+    total1 = np.sum(data1)/data1.size
+    total2 = np.sum(data2)/data2.size
+
+    # What is k classes and if 2 how to do we build the matrix?
+
+    return means, covmat
 
 def qdaLearn(X,y):
     # Inputs
@@ -29,10 +38,10 @@ def qdaLearn(X,y):
     # covmats - A list of k d x d learnt covariance matrices for each of the k classes
     
     # IMPLEMENT THIS METHOD
-    
+
     return means,covmats
 
-def ldaTest(means,covmat,Xtest,ytest)
+def ldaTest(means,covmat,Xtest,ytest):
     # Inputs
     # means, covmat - parameters of the LDA model
     # Xtest - a N x d matrix with each row corresponding to a test example
@@ -43,7 +52,7 @@ def ldaTest(means,covmat,Xtest,ytest)
     # IMPLEMENT THIS METHOD
     return acc
 
-def qdaTest(means,covmats,Xtest,ytest)
+def qdaTest(means,covmats,Xtest,ytest):
     # Inputs
     # means, covmats - parameters of the QDA model
     # Xtest - a N x d matrix with each row corresponding to a test example
