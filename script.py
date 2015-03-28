@@ -6,7 +6,7 @@ import scipy.io
 import matplotlib.pyplot as plt
 import pickle
 
-def ldaLearn(X,y):
+def ldaLearn(X, y):
     # Inputs
     # X - a N x d matrix with each row corresponding to a training example
     # y - a N x 1 column vector indicating the labels for each training example
@@ -19,7 +19,7 @@ def ldaLearn(X,y):
 
     return means,covmat
 
-def qdaLearn(X,y):
+def qdaLearn(X, y):
     # Inputs
     # X - a N x d matrix with each row corresponding to a training example
     # y - a N x 1 column vector indicating the labels for each training example
@@ -32,7 +32,7 @@ def qdaLearn(X,y):
 
     return means,covmats
 
-def ldaTest(means,covmat,Xtest,ytest)
+def ldaTest(means, covmat, Xtest, ytest)
     # Inputs
     # means, covmat - parameters of the LDA model
     # Xtest - a N x d matrix with each row corresponding to a test example
@@ -54,16 +54,17 @@ def qdaTest(means,covmats,Xtest,ytest)
     # IMPLEMENT THIS METHOD
     return acc
 
-def learnOLERegression(X,y):
+def learnOLERegression(X, y):
     # Inputs:
     # X = N x d
     # y = N x 1
     # Output:
     # w = d x 1
     # IMPLEMENT THIS METHOD
-    return w
 
-def learnRidgeERegression(X,y,lambd):
+    return np.dot(np.linalg.inv(np.dot(X.transpose(), X)), np.dot(X.transpose(), y))
+
+def learnRidgeERegression(X, y, lambd):
     # Inputs:
     # X = N x d
     # y = N x 1
@@ -83,7 +84,7 @@ def testOLERegression(w,Xtest,ytest):
     # rmse
 
     # IMPLEMENT THIS METHOD
-    return rmse
+    return np.div(np.dot(np.transpose(np.sub(ytest, np.dot(Xtest, w))), np.sub(ytest, np.dot(Xtest, w))), Xtest[0])
 
 def regressionObjVal(w, X, y, lambd):
 
