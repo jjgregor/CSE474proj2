@@ -73,7 +73,7 @@ def learnRidgeERegression(X, y, lambd):
     # w = d x 1
 
     # IMPLEMENT THIS METHOD
-    return w
+    return np.dot(np.sub(lambd, np.dot(X.transpose, y)), np.dot(X.transpose, y))
 
 def testOLERegression(w,Xtest,ytest):
     # Inputs:
@@ -93,6 +93,9 @@ def regressionObjVal(w, X, y, lambd):
     # lambda
 
     # IMPLEMENT THIS METHOD
+
+
+
     return error, error_grad
 
 def mapNonLinear(x,p):
