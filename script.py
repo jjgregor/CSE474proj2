@@ -6,6 +6,7 @@ import scipy.io
 import matplotlib.pyplot as plt
 import pickle
 
+
 def ldaLearn(X, y):
     # Inputs
     # X - a N x d matrix with each row corresponding to a training example
@@ -17,7 +18,8 @@ def ldaLearn(X, y):
 
     # IMPLEMENT THIS METHOD
 
-    return means,covmat
+    return means, covmat
+
 
 def qdaLearn(X, y):
     # Inputs
@@ -30,7 +32,8 @@ def qdaLearn(X, y):
 
     # IMPLEMENT THIS METHOD
 
-    return means,covmats
+    return means, covmats
+
 
 def ldaTest(means, covmat, Xtest, ytest)
     # Inputs
@@ -43,7 +46,8 @@ def ldaTest(means, covmat, Xtest, ytest)
     # IMPLEMENT THIS METHOD
     return acc
 
-def qdaTest(means,covmats,Xtest,ytest)
+
+def qdaTest(means, covmats, Xtest, ytest)
     # Inputs
     # means, covmats - parameters of the QDA model
     # Xtest - a N x d matrix with each row corresponding to a test example
@@ -54,6 +58,7 @@ def qdaTest(means,covmats,Xtest,ytest)
     # IMPLEMENT THIS METHOD
     return acc
 
+
 def learnOLERegression(X, y):
     # Inputs:
     # X = N x d
@@ -63,6 +68,7 @@ def learnOLERegression(X, y):
     # IMPLEMENT THIS METHOD
 
     return np.dot(np.linalg.inv(np.dot(X.transpose(), X)), np.dot(X.transpose(), y))
+
 
 def learnRidgeERegression(X, y, lambd):
     # Inputs:
@@ -75,7 +81,8 @@ def learnRidgeERegression(X, y, lambd):
     # IMPLEMENT THIS METHOD
     return np.dot(np.sub(lambd, np.dot(X.transpose, y)), np.dot(X.transpose, y))
 
-def testOLERegression(w,Xtest,ytest):
+
+def testOLERegression(w, Xtest, ytest):
     # Inputs:
     # w = d x 1
     # Xtest = N x d
@@ -86,19 +93,21 @@ def testOLERegression(w,Xtest,ytest):
     # IMPLEMENT THIS METHOD
     return np.div(np.dot(np.transpose(np.sub(ytest, np.dot(Xtest, w))), np.sub(ytest, np.dot(Xtest, w))), Xtest[0])
 
-def regressionObjVal(w, X, y, lambd):
 
+def regressionObjVal(w, X, y, lambd):
     # compute squared error (scalar) and gradient of squared error with respect
     # to w (vector) for the given data X and y and the regularization parameter
     # lambda
 
     # IMPLEMENT THIS METHOD
 
-
+    error = np.add(np.div(np.dot(np.transpose(np.sub(y, np.dot(X, w))), np.sub(y, np.dot(X, w))), np.mul(2, X[0])),
+                   np.mul(np.mul(np.dot(w.transpose, w), lambd), .5))
 
     return error, error_grad
 
-def mapNonLinear(x,p):
+
+def mapNonLinear(x, p):
     # Inputs:
     # x - a single column vector (N x 1)
     # p - integer (>= 0)
@@ -111,69 +120,69 @@ def mapNonLinear(x,p):
 
 # Problem 1
 # load the sample data
-X,y,Xtest,ytest = pickle.load(open('sample.pickle','rb'))
+X, y, Xtest, ytest = pickle.load(open('sample.pickle', 'rb'))
 
 # LDA
-means,covmat = ldaLearn(X,y)
-ldaacc = ldaTest(means,covmat,Xtest,ytest)
-print('LDA Accuracy = '+str(ldaacc))
+means, covmat = ldaLearn(X, y)
+ldaacc = ldaTest(means, covmat, Xtest, ytest)
+print('LDA Accuracy = ' + str(ldaacc))
 # QDA
-means,covmats = ldaLearn(X,y)
-qdaacc = ldaTest(means,covmats,Xtest,ytest)
-print('QDA Accuracy = '+str(qdaacc))
+means, covmats = ldaLearn(X, y)
+qdaacc = ldaTest(means, covmats, Xtest, ytest)
+print('QDA Accuracy = ' + str(qdaacc))
 
 # Problem 2
 
-X,y,Xtest,ytest = pickle.load(open('diabetes.pickle','rb'))
+X, y, Xtest, ytest = pickle.load(open('diabetes.pickle', 'rb'))
 # add intercept
-X_i = np.concatenate((np.ones((X.shape[0],1)), X), axis=1)
-Xtest_i = np.concatenate((np.ones((Xtest.shape[0],1)), Xtest), axis=1)
+X_i = np.concatenate((np.ones((X.shape[0], 1)), X), axis=1)
+Xtest_i = np.concatenate((np.ones((Xtest.shape[0], 1)), Xtest), axis=1)
 
-w = learnOLERegression(X,y)
-mle = testOLERegression(w,Xtest,ytest)
+w = learnOLERegression(X, y)
+mle = testOLERegression(w, Xtest, ytest)
 
-w_i = learnOLERegression(X_i,y)
-mle_i = testOLERegression(w_i,Xtest_i,ytest)
+w_i = learnOLERegression(X_i, y)
+mle_i = testOLERegression(w_i, Xtest_i, ytest)
 
-print('RMSE without intercept '+str(mle))
-print('RMSE with intercept '+str(mle_i))
+print('RMSE without intercept ' + str(mle))
+print('RMSE with intercept ' + str(mle_i))
 
 # Problem 3
 k = 21
 lambdas = np.linspace(0, 1.0, num=k)
 i = 0
-rmses3 = np.zeros((k,1))
+rmses3 = np.zeros((k, 1))
 for lambd in lambdas:
-    w_l = learnRidgeRegression(X_i,y,lambd)
-    rmses3[i] = testOLERegression(w_l,Xtest_i,ytest)
+    w_l = learnRidgeRegression(X_i, y, lambd)
+    rmses3[i] = testOLERegression(w_l, Xtest_i, ytest)
     i = i + 1
-plt.plot(lambdas,rmses3)
+plt.plot(lambdas, rmses3)
 
 # Problem 4
 lambdas = np.linspace(0, 1.0, num=k)
 k = 21
 i = 0
-rmses4 = np.zeros((k,1))
-opts = {'maxiter' : 50}    # Preferred value.
-w_init = np.zeros((X_i.shape[1],1))
+rmses4 = np.zeros((k, 1))
+opts = {'maxiter': 50}  # Preferred value.
+w_init = np.zeros((X_i.shape[1], 1))
 for lambd in lambdas:
     args = (X_i, y, lambd)
-    w_l = minimize(regressionObjVal, w_init, jac=True, args=args,method='CG', options=opts)
-    rmses4[i] = testOLERegression(w_l,Xtest_i,ytest)
+    w_l = minimize(regressionObjVal, w_init, jac=True, args=args, method='CG', options=opts)
+    rmses4[i] = testOLERegression(w_l, Xtest_i, ytest)
     i = i + 1
-plt.plot(lambdas,rmses4)
+plt.plot(lambdas, rmses4)
 
 
 # Problem 5
 pmax = 7
 lambda_opt = lambdas[np.argmax(rmses4)]
-rmses5 = np.zeros((pmax,2))
+rmses5 = np.zeros((pmax, 2))
 for p in range(pmax):
-    Xd = mapNonLinear(X[:,2],p)
-    Xdtest = mapNonLinear(Xtest[:,2],p)
-    w_d1 = learnRidgeRegression(Xd,y,0)
-    rmses5[p,0] = testOLERegression(w_d1,Xdtest,ytest)
-    w_d2 = learnRidgeRegression(Xd,y,lamda_opt)
-    rmses5[p,1] = testOLERegression(w_d2,Xdtest,ytest)
-plt.plot(range(pmax),rmses5)
-plt.legend('No Regularization','Regularization')
+    Xd = mapNonLinear(X[:, 2], p)
+    Xdtest = mapNonLinear(Xtest[:, 2], p)
+    w_d1 = learnRidgeRegression(Xd, y, 0)
+    rmses5[p, 0] = testOLERegression(w_d1, Xdtest, ytest)
+    w_d2 = learnRidgeRegression(Xd, y, lamda_opt)
+    rmses5[p, 1] = testOLERegression(w_d2, Xdtest, ytest)
+plt.plot(range(pmax), rmses5)
+plt.legend('No Regularization', 'Regularization')
