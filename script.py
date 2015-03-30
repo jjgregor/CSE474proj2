@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import minimize
+import scipy.ndimage as ndimag
 from scipy.io import loadmat
 from math import sqrt
 import scipy.io
@@ -18,6 +19,16 @@ def ldaLearn(X, y):
 
     # IMPLEMENT THIS METHOD
 
+    # Add the labels to the matrix giving a N x (d+1) matrix
+    left, right = np.hsplit(X, 2)
+    index = np.unique(y)
+    xAverage = ndimag.mean(left, labels=y, index=index)
+    yAverage = ndimag.mean(right,labels=y, index=index)
+
+    means = np.vstack((xAverage,yAverage))
+
+    print means
+
     return means, covmat
 
 
@@ -35,7 +46,7 @@ def qdaLearn(X, y):
     return means, covmats
 
 
-def ldaTest(means, covmat, Xtest, ytest)
+def ldaTest(means, covmat, Xtest, ytest):
     # Inputs
     # means, covmat - parameters of the LDA model
     # Xtest - a N x d matrix with each row corresponding to a test example
@@ -47,7 +58,7 @@ def ldaTest(means, covmat, Xtest, ytest)
     return acc
 
 
-def qdaTest(means, covmats, Xtest, ytest)
+def qdaTest(means, covmats, Xtest, ytest):
     # Inputs
     # means, covmats - parameters of the QDA model
     # Xtest - a N x d matrix with each row corresponding to a test example
@@ -91,6 +102,7 @@ def testOLERegression(w, Xtest, ytest):
     # rmse
 
     # IMPLEMENT THIS METHOD
+    # see pdf ... missing sqrt
     return np.div(np.dot(np.transpose(np.sub(ytest, np.dot(Xtest, w))), np.sub(ytest, np.dot(Xtest, w))), Xtest[0])
 
 
