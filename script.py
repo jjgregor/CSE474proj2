@@ -103,7 +103,6 @@ def ldaTest(means, covmat, Xtest, ytest):
 
     a = 1/np.sqrt(2 * np.pi) * (np.linalg.det(covmat)**2)
     pdfs = np.ones((Xtest.shape[0],means.shape[1]))
-    print pdfs.shape
 
     for i in range(0, Xtest.shape[0]):
 
@@ -116,12 +115,19 @@ def ldaTest(means, covmat, Xtest, ytest):
             upper = np.dot(b, c)
             upper = -.5 * np.dot(upper, d)
             pdf_val = np.exp(upper[0,0]) * a
-            print pdf_val
             pdfs[i, q] = pdf_val
 
+    maxs = np.argmax(pdfs, axis=1) + 1
 
+    maxs = np.asmatrix(maxs).T
+    acc = 0
+    for x in range(0,Xtest.shape[0]):
+        if maxs[x, 0] == ytest[x, 0]:
+            acc= acc+1
+    total = Xtest.shape[0] * 1.0
+    acc = acc * 1.0
 
-    return acc
+    return acc/total
 
 
 def qdaTest(means, covmats, Xtest, ytest):
