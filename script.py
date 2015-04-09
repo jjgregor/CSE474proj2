@@ -103,7 +103,7 @@ def testOLERegression(w, Xtest, ytest):
 
     # IMPLEMENT THIS METHOD
     # see pdf ... missing sqrt
-    return np.div(np.dot(np.transpose(np.sub(ytest, np.dot(Xtest, w))), np.sub(ytest, np.dot(Xtest, w))), Xtest[0])
+    return np.div(np.sqrt(np.dot(np.transpose(np.sub(ytest, np.dot(Xtest, w))), np.sub(ytest, np.dot(Xtest, w)))), Xtest[0])
 
 
 def regressionObjVal(w, X, y, lambd):
@@ -171,7 +171,7 @@ for lambd in lambdas:
 plt.plot(lambdas, rmses3)
 
 # Problem 4
-lambdas = np.linspace(0, 1.0, num=k)
+lambdas = np.linspace(0, 0.004, num=k)
 k = 21
 i = 0
 rmses4 = np.zeros((k, 1))
