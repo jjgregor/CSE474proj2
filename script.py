@@ -22,7 +22,6 @@ def ldaLearn(X, y):
     ########
     # MEAN #
     ########
-
     left, right = np.hsplit(X, 2)
     index = np.unique(y)
     xAverage = ndimag.mean(left, labels=y, index=index)
@@ -33,7 +32,6 @@ def ldaLearn(X, y):
     ##########
     # COVMAT #
     ##########
-
     covmat = np.cov(X.T)
 
     return means, covmat
@@ -88,7 +86,6 @@ def qdaLearn(X, y):
     covmats.append(np.cov(c.T))
     covmats.append(np.cov(d.T))
     covmats.append(np.cov(e.T))
-    print covmats
 
     return means, covmats
 
@@ -102,7 +99,29 @@ def ldaTest(means, covmat, Xtest, ytest):
     # acc - A scalar accuracy value
 
     # IMPLEMENT THIS METHOD
-    return 1
+
+
+    a = 1/np.sqrt(2 * np.pi) * (np.linalg.det(covmat)**2)
+    pdfs = np.ones((Xtest.shape[0],means.shape[1]))
+    print pdfs.shape
+
+    for i in range(0, Xtest.shape[0]):
+
+        for q in range(0, means.shape[1]):
+
+            b = (np.transpose(Xtest[i, :] - means[:, q].T))
+            b = np.asmatrix(b)
+            c = np.linalg.inv(covmat)
+            d = b.T
+            upper = np.dot(b, c)
+            upper = -.5 * np.dot(upper, d)
+            pdf_val = np.exp(upper[0,0]) * a
+            print pdf_val
+            pdfs[i, q] = pdf_val
+
+
+
+    return acc
 
 
 def qdaTest(means, covmats, Xtest, ytest):
@@ -114,7 +133,7 @@ def qdaTest(means, covmats, Xtest, ytest):
     # acc - A scalar accuracy value
 
     # IMPLEMENT THIS METHOD
-    return 1
+    return acc
 
 
 def learnOLERegression(X, y):
